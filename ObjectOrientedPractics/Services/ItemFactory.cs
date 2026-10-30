@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using ObjectOrientedPractics.Model;
 
 namespace ObjectOrientedPractics.Services;
@@ -59,6 +55,6 @@ public static class ItemFactory
         var info = Infos[_random.Next(Infos.Length)];
         var cost = Math.Round(_random.NextDouble() * 100000, 2);
 
-        return new Item(name, info, cost);
+        return new Item(name, info, cost, Category.Electronics);
     }
 }

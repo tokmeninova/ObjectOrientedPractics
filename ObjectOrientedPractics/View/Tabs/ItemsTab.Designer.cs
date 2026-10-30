@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             TabTableLayout = new TableLayoutPanel();
-            RightPanel = new Panel();
+            CategoryCombo = new Panel();
+            CategoryLabel = new Label();
+            CategoryComboBox = new ComboBox();
             DescriptionTextBox = new TextBox();
             DescriptionLabel = new Label();
             NameTextBox = new TextBox();
@@ -47,7 +49,7 @@
             listBox1 = new ListBox();
             label1 = new Label();
             TabTableLayout.SuspendLayout();
-            RightPanel.SuspendLayout();
+            CategoryCombo.SuspendLayout();
             panel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -58,7 +60,7 @@
             TabTableLayout.ColumnCount = 2;
             TabTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 39.875F));
             TabTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60.125F));
-            TabTableLayout.Controls.Add(RightPanel, 1, 0);
+            TabTableLayout.Controls.Add(CategoryCombo, 1, 0);
             TabTableLayout.Controls.Add(panel1, 0, 0);
             TabTableLayout.Dock = DockStyle.Fill;
             TabTableLayout.Location = new Point(0, 0);
@@ -68,39 +70,61 @@
             TabTableLayout.Size = new Size(800, 600);
             TabTableLayout.TabIndex = 0;
             // 
-            // RightPanel
+            // CategoryCombo
             // 
-            RightPanel.BackColor = Color.White;
-            RightPanel.Controls.Add(DescriptionTextBox);
-            RightPanel.Controls.Add(DescriptionLabel);
-            RightPanel.Controls.Add(NameTextBox);
-            RightPanel.Controls.Add(NameLabel);
-            RightPanel.Controls.Add(CostLabel);
-            RightPanel.Controls.Add(IdLabel);
-            RightPanel.Controls.Add(CostTextBox);
-            RightPanel.Controls.Add(IdTextBox);
-            RightPanel.Controls.Add(SelectedItemTabel);
-            RightPanel.Dock = DockStyle.Fill;
-            RightPanel.Location = new Point(322, 3);
-            RightPanel.Name = "RightPanel";
-            RightPanel.Size = new Size(475, 594);
-            RightPanel.TabIndex = 1;
+            CategoryCombo.BackColor = Color.White;
+            CategoryCombo.Controls.Add(CategoryLabel);
+            CategoryCombo.Controls.Add(CategoryComboBox);
+            CategoryCombo.Controls.Add(DescriptionTextBox);
+            CategoryCombo.Controls.Add(DescriptionLabel);
+            CategoryCombo.Controls.Add(NameTextBox);
+            CategoryCombo.Controls.Add(NameLabel);
+            CategoryCombo.Controls.Add(CostLabel);
+            CategoryCombo.Controls.Add(IdLabel);
+            CategoryCombo.Controls.Add(CostTextBox);
+            CategoryCombo.Controls.Add(IdTextBox);
+            CategoryCombo.Controls.Add(SelectedItemTabel);
+            CategoryCombo.Dock = DockStyle.Fill;
+            CategoryCombo.Location = new Point(322, 3);
+            CategoryCombo.Name = "CategoryCombo";
+            CategoryCombo.Size = new Size(475, 594);
+            CategoryCombo.TabIndex = 1;
+            // 
+            // CategoryLabel
+            // 
+            CategoryLabel.AutoSize = true;
+            CategoryLabel.Location = new Point(13, 106);
+            CategoryLabel.Name = "CategoryLabel";
+            CategoryLabel.Size = new Size(72, 20);
+            CategoryLabel.TabIndex = 10;
+            CategoryLabel.Text = "Category:";
+            // 
+            // CategoryComboBox
+            // 
+            CategoryComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            CategoryComboBox.FormattingEnabled = true;
+            CategoryComboBox.Location = new Point(97, 103);
+            CategoryComboBox.Name = "CategoryComboBox";
+            CategoryComboBox.Size = new Size(151, 28);
+            CategoryComboBox.TabIndex = 9;
+            CategoryComboBox.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // DescriptionTextBox
             // 
             DescriptionTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             DescriptionTextBox.BorderStyle = BorderStyle.FixedSingle;
-            DescriptionTextBox.Location = new Point(13, 278);
+            DescriptionTextBox.Location = new Point(13, 289);
             DescriptionTextBox.MaximumSize = new Size(800, 164);
             DescriptionTextBox.Multiline = true;
             DescriptionTextBox.Name = "DescriptionTextBox";
             DescriptionTextBox.Size = new Size(459, 164);
             DescriptionTextBox.TabIndex = 8;
+            DescriptionTextBox.TextChanged += DescriptionTextBox_TextChanged;
             // 
             // DescriptionLabel
             // 
             DescriptionLabel.AutoSize = true;
-            DescriptionLabel.Location = new Point(13, 255);
+            DescriptionLabel.Location = new Point(13, 266);
             DescriptionLabel.Name = "DescriptionLabel";
             DescriptionLabel.Size = new Size(88, 20);
             DescriptionLabel.TabIndex = 7;
@@ -110,7 +134,7 @@
             // 
             NameTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             NameTextBox.BorderStyle = BorderStyle.FixedSingle;
-            NameTextBox.Location = new Point(13, 135);
+            NameTextBox.Location = new Point(16, 165);
             NameTextBox.MaximumSize = new Size(800, 98);
             NameTextBox.Multiline = true;
             NameTextBox.Name = "NameTextBox";
@@ -120,7 +144,7 @@
             // NameLabel
             // 
             NameLabel.AutoSize = true;
-            NameLabel.Location = new Point(13, 112);
+            NameLabel.Location = new Point(16, 142);
             NameLabel.Name = "NameLabel";
             NameLabel.Size = new Size(52, 20);
             NameLabel.TabIndex = 5;
@@ -129,7 +153,7 @@
             // CostLabel
             // 
             CostLabel.AutoSize = true;
-            CostLabel.Location = new Point(13, 73);
+            CostLabel.Location = new Point(13, 72);
             CostLabel.Name = "CostLabel";
             CostLabel.Size = new Size(41, 20);
             CostLabel.TabIndex = 4;
@@ -148,7 +172,7 @@
             // CostTextBox
             // 
             CostTextBox.BorderStyle = BorderStyle.FixedSingle;
-            CostTextBox.Location = new Point(85, 70);
+            CostTextBox.Location = new Point(97, 70);
             CostTextBox.Name = "CostTextBox";
             CostTextBox.Size = new Size(151, 27);
             CostTextBox.TabIndex = 2;
@@ -156,7 +180,7 @@
             // IdTextBox
             // 
             IdTextBox.BorderStyle = BorderStyle.FixedSingle;
-            IdTextBox.Location = new Point(85, 34);
+            IdTextBox.Location = new Point(97, 34);
             IdTextBox.Name = "IdTextBox";
             IdTextBox.Size = new Size(151, 27);
             IdTextBox.TabIndex = 1;
@@ -262,8 +286,8 @@
             Name = "ItemsListBox";
             Size = new Size(800, 600);
             TabTableLayout.ResumeLayout(false);
-            RightPanel.ResumeLayout(false);
-            RightPanel.PerformLayout();
+            CategoryCombo.ResumeLayout(false);
+            CategoryCombo.PerformLayout();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
@@ -273,7 +297,7 @@
         #endregion
 
         private TableLayoutPanel TabTableLayout;
-        private Panel RightPanel;
+        private Panel CategoryCombo;
         private TableLayoutPanel tableLayoutPanel1;
         private Button button1;
         private Button button2;
@@ -290,5 +314,7 @@
         private ListBox listBox1;
         private Label label1;
         private Button GenerateItemButton;
+        private ComboBox CategoryComboBox;
+        private Label CategoryLabel;
     }
 }

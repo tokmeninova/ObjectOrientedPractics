@@ -18,6 +18,7 @@ namespace ObjectOrientedPractics.View.Tabs
 
         private readonly List<Item> _items = new List<Item>();
 
+
         public ItemsListBox()
         {
             InitializeComponent();
@@ -25,38 +26,85 @@ namespace ObjectOrientedPractics.View.Tabs
             IdTextBox.ReadOnly = true;
             ResetColors();
 
+            // Заполняем выпадающий список категориями товаров.
+            CategoryComboBox.DataSource =
+                Enum.GetValues(typeof(Category));
+
+            // Пользователь может только выбрать категорию.
+            CategoryComboBox.DropDownStyle =
+                ComboBoxStyle.DropDownList;
+
             button1.Click += AddItemButton_Click;
             button2.Click += RemoveItemButton_Click;
-            listBox1.SelectedIndexChanged += ItemsListBox_SelectedIndexChanged;
 
-            // Кнопка Generate a product подключена в ItemsTab.Designer.cs.
+            listBox1.SelectedIndexChanged +=
+                ItemsListBox_SelectedIndexChanged;
+            CategoryComboBox.SelectedIndexChanged += CategoryComboBox_SelectedIndexChanged;
         }
 
+
+
         /// <summary>
-        /// Добавляет товар, если ничего не выбрано, или изменяет выбранный.
+        /// Изменяет категорию выбранного товара.
+        /// </summary>
+        private void CategoryComboBox_SelectedIndexChanged(
+            object sender, EventArgs e)
+        {
+            int index = listBox1.SelectedIndex;
+
+            if (index == -1)
+                return;
+
+            Item item = _items[index];
+
+            if (CategoryComboBox.SelectedItem is Category category)
+            {
+                item.Category = category;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Добавляет товар, если ничего не выбрано,
+        /// или изменяет существующий товар.
         /// </summary>
         private void AddItemButton_Click(object sender, EventArgs e)
         {
-            if (!TryReadItem(out string name, out string description, out double cost))
+            if (!TryReadItem(out string name,
+                out string description, out double cost))
                 return;
 
             try
             {
                 int index = listBox1.SelectedIndex;
 
+                // Получаем выбранную категорию.
+                Category category =
+                    (Category)CategoryComboBox.SelectedItem;
+
                 if (index == -1)
                 {
-                    Item item = new Item(name, description, cost);
+                    // Создаём товар с четырьмя аргументами.
+                    Item item = new Item(
+                        name,
+                        description,
+                        cost,
+                        category);
+
                     _items.Add(item);
                     listBox1.Items.Add(item);
                 }
                 else
                 {
-                    // Изменяем существующий объект, не создавая его копию.
+                    // Изменяем выбранный товар.
                     Item item = _items[index];
+
                     item.Name = name;
                     item.Info = description;
                     item.Cost = cost;
+                    item.Category = category;
+
                     listBox1.Items[index] = item;
                 }
 
@@ -67,6 +115,7 @@ namespace ObjectOrientedPractics.View.Tabs
                 ShowError(ex.Message);
             }
         }
+
 
         /// <summary>
         /// Удаляет выбранный товар.
@@ -98,20 +147,28 @@ namespace ObjectOrientedPractics.View.Tabs
         }
 
         /// <summary>
-        /// Отображает данные выбранного товара в текстовых полях.
+        /// Отображает данные выбранного товара.
         /// </summary>
-        private void ItemsListBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void ItemsListBox_SelectedIndexChanged(
+            object sender, EventArgs e)
         {
             int index = listBox1.SelectedIndex;
+
             if (index == -1)
                 return;
 
             Item item = _items[index];
+
             IdTextBox.Text = item.Id.ToString();
             NameTextBox.Text = item.Name;
             CostTextBox.Text = item.Cost.ToString();
             DescriptionTextBox.Text = item.Info;
+
+            // Показываем категорию выбранного товара.
+            CategoryComboBox.SelectedItem = item.Category;
         }
+
+
 
         /// <summary>
         /// Проверяет данные и сообщает об ошибках без окрашивания полей.
@@ -184,5 +241,15 @@ namespace ObjectOrientedPractics.View.Tabs
 
         // Обработчик используется в Designer.
         private void IdLabel_Click(object sender, EventArgs e) { }
+
+        private void DescriptionTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

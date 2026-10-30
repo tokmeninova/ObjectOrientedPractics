@@ -32,6 +32,13 @@ public class Item
     /// </summary>
     public int Id { get { return _id; } }
 
+
+    /// <summary>
+    /// Категория товара.
+    /// </summary>
+    public Category Category { get; set; }
+
+
     /// <summary>
     /// Возвращает и задаёт название товара. Должно быть не длиннее 200 символов.
     /// </summary>
@@ -95,11 +102,13 @@ public class Item
     /// <param name="name">Название товара. Должно быть не длиннее 200 символов.</param>
     /// <param name="info">Описание товара. Должно быть не длиннее 1000 символов.</param>
     /// <param name="cost">Стоимость товара. Должна быть в диапазоне от 0 до 100 000.</param>
-    public Item(string name, string info, double cost)
+    /// <param name="category">Категория товара.</param>
+    public Item(string name, string info, double cost, Category category)
     {
         Name = name;
         Info = info;
         Cost = cost;
+        Category = category;
         _id = IdGenerator.GetNextId();
 
     }
