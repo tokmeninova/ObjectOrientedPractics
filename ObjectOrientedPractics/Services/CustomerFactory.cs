@@ -1,9 +1,6 @@
-﻿using ObjectOrientedPractics.Model;
+﻿
+using ObjectOrientedPractics.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ObjectOrientedPractics.Services;
 
@@ -30,14 +27,31 @@ public static class CustomerFactory
     /// <summary>
     /// Массив возможных адресов покупателей.
     /// </summary>
-    private static readonly string[] Addresses =
+    private static readonly Address[] Addresses =
     {
-        "г. Томск, ул. Ленина, д. 12, кв. 45",
-        "г. Томск, пр. Кирова, д. 34, кв. 7",
-        "г. Новосибирск, ул. Гагарина, д. 5, кв. 101",
-        "г. Москва, ул. Тверская, д. 8, кв. 22",
-        "г. Санкт-Петербург, Невский пр., д. 100, кв. 15",
-        "г. Томск, ул. Советская, д. 20, кв. 3"
+        new Address(
+            634050, "Россия", "Томск",
+            "Ленина", "12", "45"),
+
+        new Address(
+            634034, "Россия", "Томск",
+            "Кирова", "34", "7"),
+
+        new Address(
+            630099, "Россия", "Новосибирск",
+            "Гагарина", "5", "101"),
+
+        new Address(
+            125009, "Россия", "Москва",
+            "Тверская", "8", "22"),
+
+        new Address(
+            191025, "Россия", "Санкт-Петербург",
+            "Невский проспект", "100", "15"),
+
+        new Address(
+            634041, "Россия", "Томск",
+            "Советская", "20", "3")
     };
 
     /// <summary>
@@ -48,11 +62,26 @@ public static class CustomerFactory
     /// <summary>
     /// Создаёт случайного покупателя.
     /// </summary>
-    /// <returns>Возвращает объект <see cref="Customer"/> со случайными данными.</returns>
+    /// <returns>
+    /// Объект Customer со случайным именем и адресом.
+    /// </returns>
     public static Customer CreateRandomCustomer()
     {
-        var fullname = FullNames[_random.Next(FullNames.Length)];
-        var address = Addresses[_random.Next(Addresses.Length)];
+        string fullname =
+            FullNames[_random.Next(FullNames.Length)];
+
+        Address selectedAddress =
+            Addresses[_random.Next(Addresses.Length)];
+
+        // Создаём отдельный объект адреса
+        // для каждого нового покупателя.
+        Address address = new Address(
+            selectedAddress.Index,
+            selectedAddress.Country,
+            selectedAddress.City,
+            selectedAddress.Street,
+            selectedAddress.Building,
+            selectedAddress.Apartment);
 
         return new Customer(fullname, address);
     }

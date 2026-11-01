@@ -18,9 +18,9 @@ public class Customer
     private string _fullname;
 
     /// <summary>
-    /// Адрес покупателя.
+    /// Адрес доставки покупателя.
     /// </summary>
-    private string _address;
+    private Address _address;
 
     /// <summary>
     /// Возвращает уникальный идентификатор покупателя.
@@ -43,10 +43,11 @@ public class Customer
         }
     }
 
+
     /// <summary>
-    /// Возвращает и задаёт адрес покупателя. Должен быть не длиннее 500 символов.
+    /// Возвращает и задаёт адрес доставки покупателя.
     /// </summary>
-    public string Address
+    public Address Address
     {
         get
         {
@@ -54,30 +55,33 @@ public class Customer
         }
         set
         {
-            ValueValidator.AssertStringOnLength(value, 500, nameof(Address));
-            _address = value;
+            _address = value ?? throw new ArgumentNullException(
+                nameof(Address),
+                "Адрес покупателя не может быть null.");
         }
     }
 
     /// <summary>
-    /// Создаёт экземпляр класса <see cref="Customer"/>.
+    /// Создаёт покупателя с пустым адресом.
     /// </summary>
     public Customer()
     {
         _id = IdGenerator.GetNextId();
+        _address = new Address();
     }
 
     /// <summary>
-    /// Создаёт экземпляр класса <see cref="Customer"/>.
+    /// Создаёт покупателя с указанным именем и адресом.
     /// </summary>
-    /// <param name="fullname">Полное имя покупателя. Должно быть не длиннее 200 символов.</param>
-    /// <param name="address">Адрес покупателя. Должен быть не длиннее 500 символов.</param>
-    public Customer(string fullname, string address)
+    /// <param name="fullname">Полное имя покупателя.</param>
+    /// <param name="address">Адрес доставки покупателя.</param>
+    public Customer(string fullname, Address address)
     {
+        _id = IdGenerator.GetNextId();
         Fullname = fullname;
         Address = address;
-        _id = IdGenerator.GetNextId();
     }
+
     public override string ToString()
     {
         return Fullname;

@@ -38,7 +38,6 @@
             LeftButton = new Button();
             RightButton = new Button();
             СustomersListBox = new ListBox();
-            NameTextBox = new TextBox();
             CostLabel = new Label();
             IdLabel = new Label();
             IdTextBox = new TextBox();
@@ -46,8 +45,8 @@
             CostTextBox = new TextBox();
             TableLayout = new TableLayoutPanel();
             RightPanel = new Panel();
+            addressControl2 = new ObjectOrientedPractics.View.Controls.AddressControl();
             SelectedCustomerPanel = new Panel();
-            NameLabel = new Label();
             tableLayoutPanel1.SuspendLayout();
             LeftPanel.SuspendLayout();
             TabTableLayout.SuspendLayout();
@@ -178,18 +177,6 @@
             СustomersListBox.Size = new Size(318, 564);
             СustomersListBox.TabIndex = 1;
             // 
-            // NameTextBox
-            // 
-            NameTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            NameTextBox.BorderStyle = BorderStyle.FixedSingle;
-            NameTextBox.Location = new Point(84, 112);
-            NameTextBox.MaximumSize = new Size(800, 98);
-            NameTextBox.Multiline = true;
-            NameTextBox.Name = "NameTextBox";
-            NameTextBox.Size = new Size(425, 98);
-            NameTextBox.TabIndex = 6;
-            NameTextBox.TextChanged += NameTextBox_TextChanged;
-            // 
             // CostLabel
             // 
             CostLabel.AutoSize = true;
@@ -255,9 +242,8 @@
             // RightPanel
             // 
             RightPanel.BackColor = Color.White;
+            RightPanel.Controls.Add(addressControl2);
             RightPanel.Controls.Add(SelectedCustomerPanel);
-            RightPanel.Controls.Add(NameTextBox);
-            RightPanel.Controls.Add(NameLabel);
             RightPanel.Controls.Add(CostLabel);
             RightPanel.Controls.Add(IdLabel);
             RightPanel.Controls.Add(CostTextBox);
@@ -269,22 +255,20 @@
             RightPanel.Size = new Size(512, 666);
             RightPanel.TabIndex = 1;
             // 
+            // addressControl2
+            // 
+            addressControl2.Location = new Point(-19, 112);
+            addressControl2.Name = "addressControl2";
+            addressControl2.Size = new Size(743, 242);
+            addressControl2.TabIndex = 9;
+            addressControl2.Load += addressControl2_Load_1;
+            // 
             // SelectedCustomerPanel
             // 
             SelectedCustomerPanel.Location = new Point(3, 216);
             SelectedCustomerPanel.Name = "SelectedCustomerPanel";
             SelectedCustomerPanel.Size = new Size(506, 444);
             SelectedCustomerPanel.TabIndex = 8;
-            // 
-            // NameLabel
-            // 
-            NameLabel.AutoSize = true;
-            NameLabel.Location = new Point(3, 114);
-            NameLabel.Name = "NameLabel";
-            NameLabel.Size = new Size(65, 20);
-            NameLabel.TabIndex = 5;
-            NameLabel.Text = "Address:";
-            NameLabel.Click += NameLabel_Click;
             // 
             // CustomersTab
             // 
@@ -311,7 +295,6 @@
         private Button button2;
         private Panel LeftPanel;
         private ListBox СustomersListBox;
-        private TextBox NameTextBox;
         private Label CostLabel;
         private Label IdLabel;
         private TextBox IdTextBox;
@@ -324,6 +307,6 @@
         private Button RightButton;
         private Panel SelectedCustomerPanel;
         private Button GenerateCustomerButton;
-        private Label NameLabel;
+        private Controls.AddressControl addressControl2;
     }
 }
