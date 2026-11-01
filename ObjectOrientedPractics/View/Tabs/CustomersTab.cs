@@ -21,14 +21,70 @@ namespace ObjectOrientedPractics.View.Tabs
         private const int MaxFullnameLength = 200;
 
         /// <summary>
-        /// Список покупателей.
+        /// Список покупателей магазина.
         /// </summary>
-        private readonly List<Customer> _customers =
-            new List<Customer>();
+        private List<Customer> _customers = new List<Customer>();
+
         /// <summary>
         /// Элемент управления адресом доставки.
         /// </summary>
         private readonly AddressControl addressControl1;
+
+
+        /// <summary>
+        /// Перенумеровывает покупателей начиная с 1.
+        /// </summary>
+        private void RenumberCustomers()
+        {
+            for (int i = 0; i < _customers.Count; i++)
+            {
+                _customers[i].SetId(i + 1);
+            }
+
+            int selectedIndex = СustomersListBox.SelectedIndex;
+
+            if (selectedIndex >= 0 &&
+                selectedIndex < _customers.Count)
+            {
+                IdTextBox.Text =
+                    _customers[selectedIndex].Id.ToString();
+            }
+        }
+
+
+
+        /// <summary>
+        /// Возвращает или задаёт список покупателей.
+        /// </summary>
+        public List<Customer> Customers
+        {
+            get
+            {
+                return _customers;
+            }
+            set
+            {
+                _customers = value ??
+                    throw new ArgumentNullException(nameof(value));
+
+                // Перенумеровываем покупателей.
+                RenumberCustomers();
+
+                // Очищаем визуальный список.
+                СustomersListBox.Items.Clear();
+
+                // Отображаем покупателей.
+                foreach (Customer customer in _customers)
+                {
+                    СustomersListBox.Items.Add(customer);
+                }
+
+                ResetForm();
+            }
+        }
+
+
+
 
         /// <summary>
         /// Создаёт вкладку управления покупателями.
@@ -80,6 +136,7 @@ namespace ObjectOrientedPractics.View.Tabs
 
                     _customers.Add(customer);
                     СustomersListBox.Items.Add(customer);
+                    RenumberCustomers();
                 }
                 else
                 {
@@ -101,8 +158,10 @@ namespace ObjectOrientedPractics.View.Tabs
             }
         }
 
+
         /// <summary>
-        /// Удаляет выбранного покупателя.
+        /// Удаляет выбранного покупателя
+        /// и обновляет идентификаторы.
         /// </summary>
         private void RemoveCustomerButton_Click(
             object? sender, EventArgs e)
@@ -115,11 +174,20 @@ namespace ObjectOrientedPractics.View.Tabs
                 return;
             }
 
+            // Удаляем покупателя из коллекции.
             _customers.RemoveAt(index);
+
+            // Удаляем покупателя из ListBox.
             СustomersListBox.Items.RemoveAt(index);
 
+            // Обновляем ID оставшихся покупателей.
+            RenumberCustomers();
+
+            // Очищаем поля формы.
             ResetForm();
         }
+
+
 
         /// <summary>
         /// Генерирует случайного покупателя.
@@ -133,8 +201,12 @@ namespace ObjectOrientedPractics.View.Tabs
             _customers.Add(customer);
             СustomersListBox.Items.Add(customer);
 
+            // Обновляем ID всех покупателей.
+            RenumberCustomers();
+
             ResetForm();
         }
+
 
         /// <summary>
         /// Отображает данные выбранного покупателя.

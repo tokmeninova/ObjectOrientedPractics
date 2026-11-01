@@ -16,7 +16,42 @@ namespace ObjectOrientedPractics.View.Tabs
         private const int MaxDescriptionLength = 1000;
         private const double MaxCost = 100000;
 
-        private readonly List<Item> _items = new List<Item>();
+        /// <summary>
+        /// Коллекция товаров, отображаемых на вкладке.
+        /// </summary>
+        private List<Item> _items = new List<Item>();
+
+
+        /// <summary>
+        /// Возвращает или задаёт список товаров.
+        /// При изменении списка обновляет отображение.
+        /// </summary>
+        public List<Item> Items
+        {
+            get
+            {
+                return _items;
+            }
+            set
+            {
+                // Запрещаем передачу null.
+                _items = value ?? throw new ArgumentNullException(
+                    nameof(value));
+
+                // Очищаем визуальный список.
+                listBox1.Items.Clear();
+
+                // Отображаем товары из новой коллекции.
+                foreach (Item item in _items)
+                {
+                    listBox1.Items.Add(item);
+                }
+
+                // Очищаем поля редактирования.
+                ResetForm();
+            }
+        }
+
 
 
         public ItemsListBox()

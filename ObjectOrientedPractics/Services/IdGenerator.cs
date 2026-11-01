@@ -24,4 +24,20 @@ public static class IdGenerator
     {
         return _id++;
     }
+    /// <summary>
+    /// Учитывает ранее сохранённый идентификатор.
+    /// </summary>
+    /// <param name="id">Идентификатор загруженного объекта.</param>
+    public static void RegisterExistingId(int id)
+    {
+        if (id <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(id));
+        }
+
+        if (id >= _id)
+        {
+            _id = checked(id + 1);
+        }
+    }
 }
