@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace ObjectOrientedPractics.Services;
 
@@ -23,5 +19,21 @@ public static class IdGenerator
     public static int GetNextId()
     {
         return _id++;
+    }
+    /// <summary>
+    /// Учитывает ранее сохранённый идентификатор.
+    /// </summary>
+    /// <param name="id">Идентификатор загруженного объекта.</param>
+    public static void RegisterExistingId(int id)
+    {
+        if (id <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(id));
+        }
+
+        if (id >= _id)
+        {
+            _id = checked(id + 1);
+        }
     }
 }

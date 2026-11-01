@@ -1,102 +1,181 @@
 ﻿
 using ObjectOrientedPractics.Model;
-using ObjectOrientedPractics.Services;
-using ObjectOrientedPractics.View.Controls;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
+using ObjectOrientedPractics.Services; 
+using ObjectOrientedPractics.View.Controls; 
+
 
 namespace ObjectOrientedPractics.View.Tabs
 {
     /// <summary>
-    /// Управление покупателями:
-    /// добавление, редактирование, удаление и генерация.
+    /// Управляет покупателями магазина.
     /// </summary>
     public partial class CustomersTab : UserControl
     {
         /// <summary>
-        /// Максимальная длина полного имени покупателя.
+        /// Максимальная длина имени.
         /// </summary>
         private const int MaxFullnameLength = 200;
 
         /// <summary>
         /// Список покупателей.
         /// </summary>
-        private readonly List<Customer> _customers =
-            new List<Customer>();
+        private List<Customer> _customers = new List<Customer>();
+
         /// <summary>
-        /// Элемент управления адресом доставки.
+        /// Элемент управления адресом.
         /// </summary>
         private readonly AddressControl addressControl1;
 
         /// <summary>
-        /// Создаёт вкладку управления покупателями.
+        /// Перенумеровывает покупателей с 1.
         /// </summary>
-        public CustomersTab()
+        private void RenumberCustomers()
         {
-            InitializeComponent(); 
+            // Проходим по всем покупателям.
+            for (int i = 0; i < _customers.Count; i++)
+            {
+                // Присваиваем ID по порядку.
+                _customers[i].SetId(i + 1);
+            }
 
-            addressControl1 = addressControl2;
+            // Получаем индекс выбранного покупателя.
+            int selectedIndex = СustomersListBox.SelectedIndex;
 
-            IdTextBox.ReadOnly = true;
-            ResetColors();
-
-            LeftButton.Click += AddCustomerButton_Click;
-            RightButton.Click += RemoveCustomerButton_Click;
-
-            СustomersListBox.SelectedIndexChanged +=
-                CustomersListBox_SelectedIndexChanged;
-
-            СustomersListBox.KeyDown +=
-                CustomersListBox_KeyDown;
-
-            // Кнопка Generate уже подключена в Designer.
+            // Проверяем допустимость индекса.
+            if (selectedIndex >= 0 &&
+                selectedIndex < _customers.Count)
+            {
+                // Показываем новый ID.
+                IdTextBox.Text =
+                    _customers[selectedIndex].Id.ToString();
+            }
         }
 
         /// <summary>
-        /// Добавляет нового покупателя
-        /// или изменяет выбранного.
+        /// Возвращает или задаёт список покупателей.
+        /// </summary>
+        public List<Customer> Customers
+        {
+            get
+            {
+                // Возвращаем список.
+                return _customers;
+            }
+            set
+            {
+                // Присваиваем список с проверкой на null.
+                _customers = value ??
+                    throw new ArgumentNullException(nameof(value));
+
+                // Перенумеровываем покупателей.
+                RenumberCustomers();
+
+                // Очищаем список на форме.
+                СustomersListBox.Items.Clear();
+
+                // Перебираем покупателей.
+                foreach (Customer customer in _customers)
+                {
+                    // Добавляем покупателя в ListBox.
+                    СustomersListBox.Items.Add(customer);
+                }
+
+                // Очищаем поля формы.
+                ResetForm();
+            }
+        }
+
+        /// <summary>
+        /// Создаёт вкладку покупателей.
+        /// </summary>
+        public CustomersTab()
+        {
+            // Создаём элементы интерфейса.
+            InitializeComponent();
+
+            // Получаем AddressControl из Designer.
+            addressControl1 = addressControl2;
+
+            // Запрещаем редактировать ID.
+            IdTextBox.ReadOnly = true;
+
+            // Восстанавливаем цвета.
+            ResetColors();
+
+            // Подключаем кнопку Add.
+            LeftButton.Click += AddCustomerButton_Click;
+
+            // Подключаем кнопку Remove.
+            RightButton.Click += RemoveCustomerButton_Click;
+
+            // Подключаем обработчик выбора покупателя.
+            СustomersListBox.SelectedIndexChanged +=
+                CustomersListBox_SelectedIndexChanged;
+
+            // Подключаем обработчик клавиатуры.
+            СustomersListBox.KeyDown +=
+                CustomersListBox_KeyDown;
+
+            
+        }
+
+        /// <summary>
+        /// Добавляет или изменяет покупателя.
         /// </summary>
         private void AddCustomerButton_Click(
             object? sender, EventArgs e)
         {
+            // Проверяем имя и адрес.
             if (!TryReadCustomer(
                 out string fullname,
                 out Address address))
             {
+                // Прерываем при ошибке.
                 return;
             }
 
             try
             {
+                // Получаем выбранный индекс.
                 int index = СustomersListBox.SelectedIndex;
 
+                // Если покупатель не выбран.
                 if (index == -1)
                 {
-                    // Создаём нового покупателя.
+                    // Создаём покупателя.
                     Customer customer = new Customer(
                         fullname, address);
 
+                    // Добавляем в коллекцию.
                     _customers.Add(customer);
+
+                    // Добавляем в ListBox.
                     СustomersListBox.Items.Add(customer);
+
+                    // Обновляем идентификаторы.
+                    RenumberCustomers();
                 }
                 else
                 {
-                    // Изменяем существующего покупателя.
+                    // Получаем выбранного покупателя.
                     Customer customer = _customers[index];
 
+                    // Изменяем имя.
                     customer.Fullname = fullname;
+
+                    // Изменяем адрес.
                     customer.Address = address;
 
-                    // Обновляем отображение имени.
+                    // Обновляем отображение.
                     СustomersListBox.Items[index] = customer;
                 }
 
+                // Очищаем поля формы.
                 ResetForm();
             }
             catch (ArgumentException ex)
             {
+                // Показываем ошибку данных.
                 ShowError(ex.Message);
             }
         }
@@ -107,17 +186,29 @@ namespace ObjectOrientedPractics.View.Tabs
         private void RemoveCustomerButton_Click(
             object? sender, EventArgs e)
         {
+            // Получаем индекс выбранного покупателя.
             int index = СustomersListBox.SelectedIndex;
 
+            // Проверяем наличие выбора.
             if (index == -1)
             {
+                // Показываем сообщение.
                 ShowError("Сначала выберите покупателя!");
+
+                // Прерываем удаление.
                 return;
             }
 
+            // Удаляем объект из коллекции.
             _customers.RemoveAt(index);
+
+            // Удаляем элемент из ListBox.
             СustomersListBox.Items.RemoveAt(index);
 
+            // Обновляем ID оставшихся покупателей.
+            RenumberCustomers();
+
+            // Очищаем поля.
             ResetForm();
         }
 
@@ -127,77 +218,99 @@ namespace ObjectOrientedPractics.View.Tabs
         private void GenerateCustomerButton_Click_1(
             object? sender, EventArgs e)
         {
+            // Создаём случайного покупателя.
             Customer customer =
                 CustomerFactory.CreateRandomCustomer();
 
+            // Добавляем объект в коллекцию.
             _customers.Add(customer);
+
+            // Отображаем покупателя в ListBox.
             СustomersListBox.Items.Add(customer);
 
+            // Перенумеровываем покупателей.
+            RenumberCustomers();
+
+            // Очищаем форму.
             ResetForm();
         }
 
         /// <summary>
-        /// Отображает данные выбранного покупателя.
+        /// Отображает выбранного покупателя.
         /// </summary>
         private void CustomersListBox_SelectedIndexChanged(
             object? sender, EventArgs e)
         {
+            // Получаем индекс выбранного элемента.
             int index = СustomersListBox.SelectedIndex;
 
+            // Проверяем наличие выбора.
             if (index == -1)
             {
+                // Прерываем обработчик.
                 return;
             }
 
+            // Получаем выбранного покупателя.
             Customer customer = _customers[index];
 
+            // Показываем ID.
             IdTextBox.Text = customer.Id.ToString();
+
+            // Показываем полное имя.
             CostTextBox.Text = customer.Fullname;
 
-            // Копируем адрес, чтобы изменения до Add
-            // не затрагивали исходного покупателя.
+            // Получаем адрес покупателя.
             Address source = customer.Address;
 
+            // Проверяем наличие заполненного индекса.
             if (source.Index == 0)
             {
+                // Устанавливаем пустой адрес.
                 addressControl1.Address = new Address();
             }
             else
             {
+                // Создаём копию адреса.
                 addressControl1.Address = new Address(
-                    source.Index,
-                    source.Country,
-                    source.City,
-                    source.Street,
-                    source.Building,
+                    source.Index,     
+                    source.Country,  
+                    source.City,      
+                    source.Street,   
+                    source.Building,  
                     source.Apartment);
             }
         }
 
         /// <summary>
-        /// Проверяет имя и получает адрес покупателя.
+        /// Проверяет имя и адрес покупателя.
         /// </summary>
         /// <param name="fullname">Полное имя.</param>
-        /// <param name="address">Проверенный адрес.</param>
-        /// <returns>
-        /// True, если все данные корректны.
-        /// </returns>
+        /// <param name="address">Адрес доставки.</param>
+        /// <returns>True, если данные корректны.</returns>
         private bool TryReadCustomer(
             out string fullname,
             out Address address)
         {
+            // Получаем имя без лишних пробелов.
             fullname = CostTextBox.Text.Trim();
+
+            // Инициализируем выходной параметр.
             address = null!;
 
+            // Проверяем, заполнено ли имя.
             if (string.IsNullOrWhiteSpace(fullname))
             {
+                // Сообщаем об отсутствии имени.
                 return ShowInputError(
                     "Введите Full Name!",
                     CostTextBox);
             }
 
+            // Проверяем максимальную длину имени.
             if (fullname.Length > MaxFullnameLength)
             {
+                // Сообщаем о превышении длины.
                 return ShowInputError(
                     "Full Name не должен превышать 200 символов!",
                     CostTextBox);
@@ -205,42 +318,56 @@ namespace ObjectOrientedPractics.View.Tabs
 
             try
             {
-                // Получаем проверенный адрес из элемента.
+                // Получаем проверенный адрес.
                 address = addressControl1.Address;
+
+                // Данные корректны.
                 return true;
             }
             catch (InvalidOperationException ex)
             {
+                // Показываем ошибку адреса.
                 ShowError(ex.Message);
+
+                // Возвращаем отрицательный результат.
                 return false;
             }
         }
 
         /// <summary>
-        /// Очищает форму для нового покупателя.
+        /// Очищает форму покупателя.
         /// </summary>
         private void ResetForm()
         {
+            // Снимаем выделение в списке.
             СustomersListBox.ClearSelected();
 
+            // Очищаем поле ID.
             IdTextBox.Clear();
+
+            // Очищаем поле имени.
             CostTextBox.Clear();
 
-            // Сбрасываем адрес.
+            // Создаём пустой адрес.
             addressControl1.Address = new Address();
 
+            // Восстанавливаем стандартные цвета.
             ResetColors();
+
+            // Устанавливаем фокус на поле имени.
             CostTextBox.Focus();
         }
 
         /// <summary>
-        /// Восстанавливает стандартные цвета.
+        /// Восстанавливает цвета полей.
         /// </summary>
         private void ResetColors()
         {
+            // Цвет списка покупателей.
             СustomersListBox.BackColor =
                 SystemColors.Window;
 
+            // Цвет поля имени.
             CostTextBox.BackColor =
                 SystemColors.Window;
         }
@@ -251,66 +378,100 @@ namespace ObjectOrientedPractics.View.Tabs
         private void CustomersListBox_KeyDown(
             object? sender, KeyEventArgs e)
         {
+            // Проверяем нажатую клавишу.
             if (e.KeyCode != Keys.Escape)
             {
+                // Пропускаем другие клавиши.
                 return;
             }
 
+            // Очищаем форму.
             ResetForm();
 
+            // Помечаем событие обработанным.
             e.Handled = true;
+
+            // Отключаем стандартную обработку клавиши.
             e.SuppressKeyPress = true;
         }
 
         /// <summary>
         /// Показывает ошибку и устанавливает фокус.
         /// </summary>
+        /// <param name="message">Текст ошибки.</param>
+        /// <param name="control">Поле ввода.</param>
+        /// <returns>Всегда false.</returns>
         private static bool ShowInputError(
             string message, Control control)
         {
+            // Показываем сообщение.
             ShowError(message);
+
+            // Устанавливаем фокус на поле.
             control.Focus();
+
+            // Возвращаем false.
             return false;
         }
 
         /// <summary>
         /// Показывает сообщение об ошибке.
         /// </summary>
+        /// <param name="message">Текст ошибки.</param>
         private static void ShowError(string message)
         {
+ 
             MessageBox.Show(
-                message,
-                "Ошибка",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
+                message,                   
+                "Ошибка",                  
+                MessageBoxButtons.OK,       
+                MessageBoxIcon.Error);      
         }
 
-        // Оставляем обработчики, если они
-        // подключены в CustomersTab.Designer.cs.
 
+        /// <summary>
+        /// Обрабатывает нажатие на подпись имени.
+        /// </summary>
         private void NameLabel_Click(
             object? sender, EventArgs e)
         {
+           
         }
 
+        /// <summary>
+        /// Обрабатывает нажатие на подпись.
+        /// </summary>
         private void label2_Click_1(
             object? sender, EventArgs e)
         {
+            
         }
 
+        /// <summary>
+        /// Обрабатывает изменение текстового поля.
+        /// </summary>
         private void NameTextBox_TextChanged(
             object? sender, EventArgs e)
         {
+           
         }
 
-        private void addressControl2_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Обрабатывает загрузку AddressControl.
+        /// </summary>
+        private void addressControl2_Load(
+            object sender, EventArgs e)
         {
-
+            
         }
 
-        private void addressControl2_Load_1(object sender, EventArgs e)
+        /// <summary>
+        /// Обрабатывает загрузку AddressControl.
+        /// </summary>
+        private void addressControl2_Load_1(
+            object sender, EventArgs e)
         {
-
+          
         }
     }
 }

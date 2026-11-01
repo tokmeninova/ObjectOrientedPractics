@@ -1,4 +1,7 @@
-﻿namespace ObjectOrientedPractics.View.Tabs
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace ObjectOrientedPractics.View.Tabs
 {
     partial class ItemsListBox
     {
@@ -107,7 +110,6 @@
             CategoryComboBox.Name = "CategoryComboBox";
             CategoryComboBox.Size = new Size(151, 28);
             CategoryComboBox.TabIndex = 9;
-            CategoryComboBox.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // DescriptionTextBox
             // 
@@ -119,7 +121,6 @@
             DescriptionTextBox.Name = "DescriptionTextBox";
             DescriptionTextBox.Size = new Size(459, 164);
             DescriptionTextBox.TabIndex = 8;
-            DescriptionTextBox.TextChanged += DescriptionTextBox_TextChanged;
             // 
             // DescriptionLabel
             // 
@@ -167,7 +168,6 @@
             IdLabel.Size = new Size(27, 20);
             IdLabel.TabIndex = 3;
             IdLabel.Text = "ID:";
-            IdLabel.Click += IdLabel_Click;
             // 
             // CostTextBox
             // 

@@ -1,4 +1,5 @@
 ﻿using ObjectOrientedPractics.Services;
+using Newtonsoft.Json;
 
 namespace ObjectOrientedPractics.Model;
 
@@ -10,7 +11,7 @@ public class Customer
     /// <summary>
     /// Уникальный идентификатор покупателя.
     /// </summary>
-    private readonly int _id;
+    private int _id;
 
     /// <summary>
     /// Полное имя покупателя.
@@ -26,6 +27,22 @@ public class Customer
     /// Возвращает уникальный идентификатор покупателя.
     /// </summary>
     public int Id { get { return _id; } }
+
+    /// <summary>
+    /// Изменяет идентификатор покупателя
+    /// при перенумерации списка.
+    /// </summary>
+    /// <param name="id">Новый идентификатор.</param>
+    internal void SetId(int id)
+    {
+        if (id <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(id));
+        }
+
+        _id = id;
+    }
+
 
     /// <summary>
     /// Возвращает и задаёт полное имя покупателя. Должно быть не длиннее 200 символов.
@@ -81,6 +98,29 @@ public class Customer
         Fullname = fullname;
         Address = address;
     }
+
+    /// <summary>
+    /// Восстанавливает покупателя с сохранённым идентификатором.
+    /// Используется при десериализации JSON.
+    /// </summary>
+    /// <param name="id">Сохранённый идентификатор.</param>
+    /// <param name="fullname">Полное имя покупателя.</param>
+    /// <param name="address">Адрес доставки.</param>
+    [JsonConstructor]
+    public Customer(int id, string fullname, Address address)
+    {
+        if (id <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(id));
+        }
+
+        _id = id;
+        Fullname = fullname;
+        Address = address;
+
+        IdGenerator.RegisterExistingId(id);
+    }
+
 
     public override string ToString()
     {

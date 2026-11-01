@@ -1,16 +1,17 @@
-﻿using ObjectOrientedPractics.Services;
+﻿
+using ObjectOrientedPractics.Services;
 
 namespace ObjectOrientedPractics.Model;
 
 /// <summary>
-/// Хранит данные о товаре: уникальный идентификатор, название, описание и стоимость.
+/// Хранит данные о товаре.
 /// </summary>
 public class Item
 {
     /// <summary>
-    /// Уникальный идентификатор товара.
+    /// Идентификатор товара.
     /// </summary>
-    private readonly int _id;
+    private int _id;
 
     /// <summary>
     /// Название товара.
@@ -28,19 +29,37 @@ public class Item
     private double _cost;
 
     /// <summary>
-    /// Возвращает уникальный идентификатор товара.
+    /// Возвращает ID товара.
     /// </summary>
-    public int Id { get { return _id; } }
+    public int Id
+    {
+        get
+        {
+            return _id;
+        }
+    }
 
+    /// <summary>
+    /// Изменяет ID товара.
+    /// </summary>
+    /// <param name="id">Новый ID.</param>
+    internal void SetId(int id)
+    {
+        if (id <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(id));
+        }
+
+        _id = id;
+    }
 
     /// <summary>
     /// Категория товара.
     /// </summary>
     public Category Category { get; set; }
 
-
     /// <summary>
-    /// Возвращает и задаёт название товара. Должно быть не длиннее 200 символов.
+    /// Название товара до 200 символов.
     /// </summary>
     public string Name
     {
@@ -50,26 +69,33 @@ public class Item
         }
         set
         {
-            ValueValidator.AssertStringOnLength(value, 200, nameof(Name));
+            ValueValidator.AssertStringOnLength(
+                value, 200, nameof(Name));
+
             _name = value;
         }
     }
 
     /// <summary>
-    /// Возвращает и задаёт описание товара. Должно быть не длиннее 1000 символов.
+    /// Описание товара до 1000 символов.
     /// </summary>
     public string Info
     {
-        get { return _info; }
+        get
+        {
+            return _info;
+        }
         set
         {
-            ValueValidator.AssertStringOnLength(value, 1000, nameof(Info));
+            ValueValidator.AssertStringOnLength(
+                value, 1000, nameof(Info));
+
             _info = value;
         }
     }
 
     /// <summary>
-    /// Возвращает и задаёт стоимость товара. Должна быть в диапазоне от 0 до 100 000.
+    /// Стоимость товара от 0 до 100000.
     /// </summary>
     public double Cost
     {
@@ -81,7 +107,8 @@ public class Item
         {
             if (value < 0 || value > 100000)
             {
-                throw new ArgumentException("Cost must be in range[0, 100 000]");
+                throw new ArgumentException(
+                    "Cost must be in range[0, 100 000]");
             }
 
             _cost = value;
@@ -89,7 +116,7 @@ public class Item
     }
 
     /// <summary>
-    /// Создаёт экземпляр класса <see cref="Item"/>.
+    /// Создаёт товар с новым ID.
     /// </summary>
     public Item()
     {
@@ -97,21 +124,30 @@ public class Item
     }
 
     /// <summary>
-    /// Создаёт экземпляр класса <see cref="Item"/>.
+    /// Создаёт товар с указанными данными.
     /// </summary>
-    /// <param name="name">Название товара. Должно быть не длиннее 200 символов.</param>
-    /// <param name="info">Описание товара. Должно быть не длиннее 1000 символов.</param>
-    /// <param name="cost">Стоимость товара. Должна быть в диапазоне от 0 до 100 000.</param>
-    /// <param name="category">Категория товара.</param>
-    public Item(string name, string info, double cost, Category category)
+    /// <param name="name">Название.</param>
+    /// <param name="info">Описание.</param>
+    /// <param name="cost">Стоимость.</param>
+    /// <param name="category">Категория.</param>
+    public Item(
+        string name,
+        string info,
+        double cost,
+        Category category)
     {
         Name = name;
         Info = info;
         Cost = cost;
         Category = category;
-        _id = IdGenerator.GetNextId();
 
+        _id = IdGenerator.GetNextId();
     }
+
+    /// <summary>
+    /// Возвращает название товара.
+    /// </summary>
+    /// <returns>Название товара.</returns>
     public override string ToString()
     {
         return Name;

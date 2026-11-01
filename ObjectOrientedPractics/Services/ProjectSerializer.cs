@@ -1,59 +1,94 @@
-﻿using ObjectOrientedPractics.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ObjectOrientedPractics.Model;
 using Newtonsoft.Json;
-using System.IO;
 
-namespace ObjectOrientedPractics.Services;
 
-/// <summary>
-/// Предоставляет методы для сохранения и загрузки данных проекта.
-/// </summary>
-public static class ProjectSerializer
+namespace ObjectOrientedPractics.Services
 {
     /// <summary>
-    /// Хранит списки товаров и покупателей для сериализации.
+    /// Сохраняет и загружает данные проекта.
     /// </summary>
-    private class ProjectData
+    public static class ProjectSerializer
     {
         /// <summary>
-        /// Возвращает и задаёт список товаров.
+        /// Хранит данные для сериализации.
         /// </summary>
-        public List<Item> Items { get; set; }
+        private class ProjectData
+        {
+            /// <summary>
+            /// Список товаров.
+            /// </summary>
+            public List<Item> Items { get; set; } = new List<Item>();
+
+            /// <summary>
+            /// Список покупателей.
+            /// </summary>
+            public List<Customer> Customers { get; set; } =
+                new List<Customer>();
+        }
 
         /// <summary>
-        /// Возвращает и задаёт список покупателей.
+        /// Сохраняет данные в JSON-файл.
         /// </summary>
-        public List<Customer> Customers { get; set; }
-    }
+        /// <param name="path">Путь к файлу.</param>
+        /// <param name="items">Список товаров.</param>
+        /// <param name="customers">Список покупателей.</param>
+        public static void Save(
+            string path,
+            List<Item> items,
+            List<Customer> customers)
+        {
+            // Проверяем списки на null.
+            ArgumentNullException.ThrowIfNull(items);
+            ArgumentNullException.ThrowIfNull(customers);
 
-    /// <summary>
-    /// Сохраняет данные проекта в файл.
-    /// </summary>
-    /// <param name="path">Путь к файлу для сохранения.</param>
-    /// <param name="items">Список товаров.</param>
-    /// <param name="customers">Список покупателей.</param>
-    public static void Save(string path, List<Item> items, List<Customer> customers)
-    {
-        var data = new ProjectData { Items = items, Customers = customers };
-        var json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        File.WriteAllText(path, json);
-    }
+            // Собираем данные проекта.
+            ProjectData data = new ProjectData
+            {
+                Items = items,
+                Customers = customers
+            };
 
-    /// <summary>
-    /// Загружает данные проекта из файла.
-    /// </summary>
-    /// <param name="path">Путь к файлу для загрузки.</param>
-    /// <param name="items">Список товаров.</param>
-    /// <param name="customers">Список покупателей.</param>
-    public static void Load(string path, out List<Item> items, out List<Customer> customers)
-    {
-        var json = File.ReadAllText(path);
-        var data = JsonConvert.DeserializeObject<ProjectData>(json);
-        items = data.Items;
-        customers = data.Customers;
+            // Преобразуем данные в JSON.
+            string json = JsonConvert.SerializeObject(
+                data,
+                Formatting.Indented);
+
+            // Записываем JSON в файл.
+            File.WriteAllText(path, json);
+        }
+
+        /// <summary>
+        /// Загружает данные из JSON-файла.
+        /// </summary>
+        /// <param name="path">Путь к файлу.</param>
+        /// <param name="items">Загруженные товары.</param>
+        /// <param name="customers">Загруженные покупатели.</param>
+        public static void Load(
+            string path,
+            out List<Item> items,
+            out List<Customer> customers)
+        {
+            // Проверяем наличие файла.
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException(
+                    "Файл сохранения не найден.",
+                    path);
+            }
+
+            // Читаем файл.
+            string json = File.ReadAllText(path);
+
+            // Восстанавливаем данные из JSON.
+            ProjectData data =
+                JsonConvert.DeserializeObject<ProjectData>(json)
+                ?? throw new InvalidDataException(
+                    "Файл не содержит корректных данных проекта.");
+
+            // Получаем списки товаров и покупателей.
+            items = data.Items ?? new List<Item>();
+            customers = data.Customers ?? new List<Customer>();
+        }
     }
 }
