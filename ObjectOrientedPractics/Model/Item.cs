@@ -3,6 +3,7 @@ using ObjectOrientedPractics.Services;
 
 namespace ObjectOrientedPractics.Model;
 
+using Newtonsoft.Json;
 /// <summary>
 /// Хранит данные о товаре.
 /// </summary>
@@ -142,6 +143,39 @@ public class Item
         Category = category;
 
         _id = IdGenerator.GetNextId();
+    }
+
+    /// <summary>
+    /// Восстанавливает товар из JSON.
+    /// </summary>
+    /// <param name="id">Сохранённый ID.</param>
+    /// <param name="name">Название товара.</param>
+    /// <param name="info">Описание товара.</param>
+    /// <param name="cost">Стоимость товара.</param>
+    /// <param name="category">Категория товара.</param>
+    [JsonConstructor]
+    public Item(
+        int id,
+        string name,
+        string info,
+        double cost,
+        Category category)
+    {
+        // Проверяем идентификатор.
+        if (id <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(id));
+        }
+
+        // Восстанавливаем данные товара.
+        _id = id;
+        Name = name;
+        Info = info;
+        Cost = cost;
+        Category = category;
+
+        // Учитываем сохранённый ID.
+        IdGenerator.RegisterExistingId(id);
     }
 
     /// <summary>

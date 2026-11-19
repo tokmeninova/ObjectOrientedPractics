@@ -33,6 +33,7 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             button2 = new Button();
             LeftPanel = new Panel();
+            customersLeftLayout = new TableLayoutPanel();
             TabTableLayout = new TableLayoutPanel();
             GenerateCustomerButton = new Button();
             LeftButton = new Button();
@@ -45,10 +46,11 @@
             CostTextBox = new TextBox();
             TableLayout = new TableLayoutPanel();
             RightPanel = new Panel();
-            addressControl2 = new ObjectOrientedPractics.View.Controls.AddressControl();
-            SelectedCustomerPanel = new Panel();
+            addressControl1 = new ObjectOrientedPractics.View.Controls.AddressControl();
+            GenerateOrdersButton = new Button();
             tableLayoutPanel1.SuspendLayout();
             LeftPanel.SuspendLayout();
+            customersLeftLayout.SuspendLayout();
             TabTableLayout.SuspendLayout();
             TableLayout.SuspendLayout();
             RightPanel.SuspendLayout();
@@ -58,7 +60,8 @@
             // 
             CustomersLabel.AutoSize = true;
             CustomersLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            CustomersLabel.Location = new Point(3, 11);
+            CustomersLabel.Margin = new Padding(0, 11, 0, 0);
+            CustomersLabel.Location = new Point(6, 11);
             CustomersLabel.Name = "CustomersLabel";
             CustomersLabel.Size = new Size(84, 20);
             CustomersLabel.TabIndex = 0;
@@ -106,19 +109,37 @@
             // LeftPanel
             // 
             LeftPanel.BackColor = Color.White;
-            LeftPanel.Controls.Add(TabTableLayout);
-            LeftPanel.Controls.Add(tableLayoutPanel1);
-            LeftPanel.Controls.Add(СustomersListBox);
-            LeftPanel.Controls.Add(CustomersLabel);
+            LeftPanel.Controls.Add(customersLeftLayout);
             LeftPanel.Dock = DockStyle.Fill;
             LeftPanel.Location = new Point(3, 3);
             LeftPanel.Name = "LeftPanel";
             LeftPanel.Size = new Size(336, 666);
             LeftPanel.TabIndex = 2;
+            LeftPanel.Paint += LeftPanel_Paint;
+            // 
+            // customersLeftLayout
+            // 
+            customersLeftLayout.ColumnCount = 1;
+            customersLeftLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            customersLeftLayout.Controls.Add(CustomersLabel, 0, 0);
+            customersLeftLayout.Controls.Add(СustomersListBox, 0, 1);
+            customersLeftLayout.Controls.Add(TabTableLayout, 0, 2);
+            customersLeftLayout.Dock = DockStyle.Fill;
+            customersLeftLayout.Location = new Point(0, 0);
+            customersLeftLayout.Margin = new Padding(0);
+            customersLeftLayout.Name = "customersLeftLayout";
+            customersLeftLayout.Padding = new Padding(6, 0, 12, 6);
+            customersLeftLayout.RowCount = 3;
+            customersLeftLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+            customersLeftLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            customersLeftLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 72F));
+            customersLeftLayout.Size = new Size(336, 666);
+            customersLeftLayout.TabIndex = 0;
             // 
             // TabTableLayout
             // 
-            TabTableLayout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            TabTableLayout.Dock = DockStyle.Fill;
+            TabTableLayout.Margin = new Padding(0, 4, 0, 0);
             TabTableLayout.ColumnCount = 3;
             TabTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             TabTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
@@ -126,19 +147,19 @@
             TabTableLayout.Controls.Add(GenerateCustomerButton, 2, 0);
             TabTableLayout.Controls.Add(LeftButton, 0, 0);
             TabTableLayout.Controls.Add(RightButton, 1, 0);
-            TabTableLayout.Location = new Point(6, 604);
+            TabTableLayout.Location = new Point(6, 592);
             TabTableLayout.Name = "TabTableLayout";
             TabTableLayout.RowCount = 1;
             TabTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TabTableLayout.Size = new Size(318, 56);
+            TabTableLayout.Size = new Size(318, 68);
             TabTableLayout.TabIndex = 10;
             // 
             // GenerateCustomerButton
             // 
-            GenerateCustomerButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            GenerateCustomerButton.Dock = DockStyle.Fill;
             GenerateCustomerButton.Location = new Point(215, 3);
             GenerateCustomerButton.Name = "GenerateCustomerButton";
-            GenerateCustomerButton.Size = new Size(100, 50);
+            GenerateCustomerButton.Size = new Size(100, 62);
             GenerateCustomerButton.TabIndex = 3;
             GenerateCustomerButton.Text = "Generate a customer";
             GenerateCustomerButton.UseVisualStyleBackColor = true;
@@ -146,35 +167,36 @@
             // 
             // LeftButton
             // 
-            LeftButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            LeftButton.Dock = DockStyle.Fill;
             LeftButton.BackColor = Color.Transparent;
             LeftButton.ForeColor = SystemColors.ControlText;
             LeftButton.Location = new Point(3, 3);
             LeftButton.Name = "LeftButton";
-            LeftButton.Size = new Size(100, 50);
+            LeftButton.Size = new Size(100, 62);
             LeftButton.TabIndex = 0;
             LeftButton.Text = "Add";
             LeftButton.UseVisualStyleBackColor = false;
             // 
             // RightButton
             // 
-            RightButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            RightButton.Dock = DockStyle.Fill;
             RightButton.BackColor = Color.Transparent;
             RightButton.Location = new Point(109, 3);
             RightButton.Name = "RightButton";
-            RightButton.Size = new Size(100, 50);
+            RightButton.Size = new Size(100, 62);
             RightButton.TabIndex = 1;
             RightButton.Text = "Remove";
             RightButton.UseVisualStyleBackColor = false;
             // 
             // СustomersListBox
             // 
-            СustomersListBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            СustomersListBox.Dock = DockStyle.Fill;
+            СustomersListBox.Margin = new Padding(0, 3, 0, 3);
             СustomersListBox.FormattingEnabled = true;
             СustomersListBox.IntegralHeight = false;
             СustomersListBox.Location = new Point(6, 37);
             СustomersListBox.Name = "СustomersListBox";
-            СustomersListBox.Size = new Size(318, 564);
+            СustomersListBox.Size = new Size(318, 542);
             СustomersListBox.TabIndex = 1;
             // 
             // CostLabel
@@ -218,7 +240,7 @@
             CostTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             CostTextBox.BorderStyle = BorderStyle.FixedSingle;
             CostTextBox.Location = new Point(84, 79);
-            CostTextBox.MaximumSize = new Size(800, 27);
+            CostTextBox.MaximumSize = new Size(425, 27);
             CostTextBox.Name = "CostTextBox";
             CostTextBox.Size = new Size(425, 27);
             CostTextBox.TabIndex = 2;
@@ -241,9 +263,10 @@
             // 
             // RightPanel
             // 
+            RightPanel.AutoScroll = true;
             RightPanel.BackColor = Color.White;
-            RightPanel.Controls.Add(addressControl2);
-            RightPanel.Controls.Add(SelectedCustomerPanel);
+            RightPanel.Controls.Add(addressControl1);
+            RightPanel.Controls.Add(GenerateOrdersButton);
             RightPanel.Controls.Add(CostLabel);
             RightPanel.Controls.Add(IdLabel);
             RightPanel.Controls.Add(CostTextBox);
@@ -255,20 +278,24 @@
             RightPanel.Size = new Size(512, 666);
             RightPanel.TabIndex = 1;
             // 
-            // addressControl2
+            // addressControl1
             // 
-            addressControl2.Location = new Point(-19, 112);
-            addressControl2.Name = "addressControl2";
-            addressControl2.Size = new Size(743, 242);
-            addressControl2.TabIndex = 9;
-            addressControl2.Load += addressControl2_Load_1;
+            addressControl1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            addressControl1.Location = new Point(3, 135);
+            addressControl1.MaximumSize = new Size(506, 0);
+            addressControl1.MinimumSize = new Size(0, 183);
+            addressControl1.Name = "addressControl1";
+            addressControl1.Size = new Size(506, 210);
+            addressControl1.TabIndex = 5;
             // 
-            // SelectedCustomerPanel
+            // GenerateOrdersButton
             // 
-            SelectedCustomerPanel.Location = new Point(3, 216);
-            SelectedCustomerPanel.Name = "SelectedCustomerPanel";
-            SelectedCustomerPanel.Size = new Size(506, 444);
-            SelectedCustomerPanel.TabIndex = 8;
+            GenerateOrdersButton.Location = new Point(3, 360);
+            GenerateOrdersButton.Name = "GenerateOrdersButton";
+            GenerateOrdersButton.Size = new Size(139, 40);
+            GenerateOrdersButton.TabIndex = 6;
+            GenerateOrdersButton.Text = "Generate orders";
+            GenerateOrdersButton.UseVisualStyleBackColor = true;
             // 
             // CustomersTab
             // 
@@ -279,7 +306,8 @@
             Size = new Size(860, 672);
             tableLayoutPanel1.ResumeLayout(false);
             LeftPanel.ResumeLayout(false);
-            LeftPanel.PerformLayout();
+            customersLeftLayout.ResumeLayout(false);
+            customersLeftLayout.PerformLayout();
             TabTableLayout.ResumeLayout(false);
             TableLayout.ResumeLayout(false);
             RightPanel.ResumeLayout(false);
@@ -294,6 +322,7 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Button button2;
         private Panel LeftPanel;
+        private TableLayoutPanel customersLeftLayout;
         private ListBox СustomersListBox;
         private Label CostLabel;
         private Label IdLabel;
@@ -305,8 +334,8 @@
         private TableLayoutPanel TabTableLayout;
         private Button LeftButton;
         private Button RightButton;
-        private Panel SelectedCustomerPanel;
         private Button GenerateCustomerButton;
-        private Controls.AddressControl addressControl2;
+        private Controls.AddressControl addressControl1;
+        private Button GenerateOrdersButton;
     }
 }

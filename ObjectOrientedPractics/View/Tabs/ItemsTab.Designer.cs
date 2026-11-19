@@ -119,7 +119,7 @@ namespace ObjectOrientedPractics.View.Tabs
             DescriptionTextBox.MaximumSize = new Size(800, 164);
             DescriptionTextBox.Multiline = true;
             DescriptionTextBox.Name = "DescriptionTextBox";
-            DescriptionTextBox.Size = new Size(459, 164);
+            DescriptionTextBox.Size = new Size(459, 159);
             DescriptionTextBox.TabIndex = 8;
             // 
             // DescriptionLabel
@@ -139,7 +139,7 @@ namespace ObjectOrientedPractics.View.Tabs
             NameTextBox.MaximumSize = new Size(800, 98);
             NameTextBox.Multiline = true;
             NameTextBox.Name = "NameTextBox";
-            NameTextBox.Size = new Size(459, 98);
+            NameTextBox.Size = new Size(459, 93);
             NameTextBox.TabIndex = 6;
             // 
             // NameLabel
@@ -221,7 +221,7 @@ namespace ObjectOrientedPractics.View.Tabs
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(307, 56);
+            tableLayoutPanel1.Size = new Size(307, 58);
             tableLayoutPanel1.TabIndex = 9;
             // 
             // button1
@@ -231,7 +231,7 @@ namespace ObjectOrientedPractics.View.Tabs
             button1.ForeColor = SystemColors.ControlText;
             button1.Location = new Point(3, 3);
             button1.Name = "button1";
-            button1.Size = new Size(96, 50);
+            button1.Size = new Size(96, 52);
             button1.TabIndex = 0;
             button1.Text = "Add";
             button1.UseVisualStyleBackColor = false;
@@ -242,7 +242,7 @@ namespace ObjectOrientedPractics.View.Tabs
             button2.BackColor = Color.Transparent;
             button2.Location = new Point(105, 3);
             button2.Name = "button2";
-            button2.Size = new Size(96, 50);
+            button2.Size = new Size(96, 52);
             button2.TabIndex = 1;
             button2.Text = "Remove";
             button2.UseVisualStyleBackColor = false;
@@ -252,7 +252,7 @@ namespace ObjectOrientedPractics.View.Tabs
             GenerateItemButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             GenerateItemButton.Location = new Point(207, 3);
             GenerateItemButton.Name = "GenerateItemButton";
-            GenerateItemButton.Size = new Size(97, 50);
+            GenerateItemButton.Size = new Size(97, 52);
             GenerateItemButton.TabIndex = 2;
             GenerateItemButton.Text = "Generate a product";
             GenerateItemButton.UseVisualStyleBackColor = true;
@@ -265,7 +265,7 @@ namespace ObjectOrientedPractics.View.Tabs
             listBox1.IntegralHeight = false;
             listBox1.Location = new Point(3, 37);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(307, 492);
+            listBox1.Size = new Size(307, 494);
             listBox1.TabIndex = 1;
             // 
             // label1

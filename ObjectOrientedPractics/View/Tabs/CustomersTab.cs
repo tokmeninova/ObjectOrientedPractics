@@ -20,11 +20,10 @@ namespace ObjectOrientedPractics.View.Tabs
         /// Список покупателей.
         /// </summary>
         private List<Customer> _customers = new List<Customer>();
-
         /// <summary>
-        /// Элемент управления адресом.
+        /// Список товаров магазина.
         /// </summary>
-        private readonly AddressControl addressControl1;
+        private List<Item> _items = new List<Item>();
 
         /// <summary>
         /// Перенумеровывает покупателей с 1.
@@ -84,6 +83,21 @@ namespace ObjectOrientedPractics.View.Tabs
                 ResetForm();
             }
         }
+        /// <summary>
+        /// Возвращает или задаёт список товаров.
+        /// </summary>
+        public List<Item> Items
+        {
+            get
+            {
+                return _items;
+            }
+            set
+            {
+                _items = value ??
+                    throw new ArgumentNullException(nameof(value));
+            }
+        }
 
         /// <summary>
         /// Создаёт вкладку покупателей.
@@ -92,9 +106,7 @@ namespace ObjectOrientedPractics.View.Tabs
         {
             // Создаём элементы интерфейса.
             InitializeComponent();
-
-            // Получаем AddressControl из Designer.
-            addressControl1 = addressControl2;
+            GenerateOrdersButton.Click += GenerateOrdersButton_Click;
 
             // Запрещаем редактировать ID.
             IdTextBox.ReadOnly = true;
@@ -116,7 +128,7 @@ namespace ObjectOrientedPractics.View.Tabs
             СustomersListBox.KeyDown +=
                 CustomersListBox_KeyDown;
 
-            
+
         }
 
         /// <summary>
@@ -236,6 +248,71 @@ namespace ObjectOrientedPractics.View.Tabs
         }
 
         /// <summary>
+        /// Генерирует случайные заказы покупателей.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Аргументы события.</param>
+        private void GenerateOrdersButton_Click(
+            object? sender, EventArgs e)
+        {
+            if (_customers.Count == 0)
+            {
+                MessageBox.Show("Нет покупателей.");
+                return;
+            }
+
+            if (_items.Count == 0)
+            {
+                MessageBox.Show("Нет товаров.");
+                return;
+            }
+
+            int createdCount = 0;
+
+            // Создаём заказы для всех покупателей.
+            foreach (Customer customer in _customers)
+            {
+                int ordersCount = Random.Shared.Next(1, 4);
+
+                for (int i = 0; i < ordersCount; i++)
+                {
+                    Address address = customer.Address;
+
+                    // Создаём заказ с адресом доставки.
+                    Order order = new Order
+                    {
+                        DeliveryAddress = new Address(
+                            address.Index,
+                            address.Country,
+                            address.City,
+                            address.Street,
+                            address.Building,
+                            address.Apartment)
+                    };
+
+                    // Добавляем случайные товары.
+                    int itemsCount = Random.Shared.Next(1, 6);
+
+                    for (int j = 0; j < itemsCount; j++)
+                    {
+                        int index = Random.Shared.Next(_items.Count);
+                        order.Items.Add(_items[index]);
+                    }
+
+                    customer.Orders.Add(order);
+                    createdCount++;
+                }
+            }
+
+            MessageBox.Show(
+                $"Создано заказов: {createdCount}",
+                "Генерация заказов",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+
+        /// <summary>
         /// Отображает выбранного покупателя.
         /// </summary>
         private void CustomersListBox_SelectedIndexChanged(
@@ -273,11 +350,11 @@ namespace ObjectOrientedPractics.View.Tabs
             {
                 // Создаём копию адреса.
                 addressControl1.Address = new Address(
-                    source.Index,     
-                    source.Country,  
-                    source.City,      
-                    source.Street,   
-                    source.Building,  
+                    source.Index,
+                    source.Country,
+                    source.City,
+                    source.Street,
+                    source.Building,
                     source.Apartment);
             }
         }
@@ -414,18 +491,19 @@ namespace ObjectOrientedPractics.View.Tabs
             return false;
         }
 
+
         /// <summary>
         /// Показывает сообщение об ошибке.
         /// </summary>
         /// <param name="message">Текст ошибки.</param>
         private static void ShowError(string message)
         {
- 
+
             MessageBox.Show(
-                message,                   
-                "Ошибка",                  
-                MessageBoxButtons.OK,       
-                MessageBoxIcon.Error);      
+                message,
+                "Ошибка",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
 
 
@@ -435,7 +513,7 @@ namespace ObjectOrientedPractics.View.Tabs
         private void NameLabel_Click(
             object? sender, EventArgs e)
         {
-           
+
         }
 
         /// <summary>
@@ -444,7 +522,7 @@ namespace ObjectOrientedPractics.View.Tabs
         private void label2_Click_1(
             object? sender, EventArgs e)
         {
-            
+
         }
 
         /// <summary>
@@ -453,7 +531,7 @@ namespace ObjectOrientedPractics.View.Tabs
         private void NameTextBox_TextChanged(
             object? sender, EventArgs e)
         {
-           
+
         }
 
         /// <summary>
@@ -462,7 +540,7 @@ namespace ObjectOrientedPractics.View.Tabs
         private void addressControl2_Load(
             object sender, EventArgs e)
         {
-            
+
         }
 
         /// <summary>
@@ -471,7 +549,17 @@ namespace ObjectOrientedPractics.View.Tabs
         private void addressControl2_Load_1(
             object sender, EventArgs e)
         {
-          
+
+        }
+
+        private void LeftPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void addressControl1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

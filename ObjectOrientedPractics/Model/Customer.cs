@@ -1,6 +1,6 @@
 ﻿using ObjectOrientedPractics.Services;
 using Newtonsoft.Json;
-
+using System.Collections.Generic;
 namespace ObjectOrientedPractics.Model;
 
 /// <summary>
@@ -22,6 +22,19 @@ public class Customer
     /// Адрес доставки покупателя.
     /// </summary>
     private Address _address;
+
+
+
+    /// <summary>
+    /// Корзина покупателя.
+    /// </summary>
+    private Cart? _cart = new Cart();
+
+
+    /// <summary>
+    /// Список заказов покупателя.
+    /// </summary>
+    private List<Order>? _orders = new List<Order>();
 
     /// <summary>
     /// Возвращает уникальный идентификатор покупателя.
@@ -79,12 +92,39 @@ public class Customer
     }
 
     /// <summary>
+    /// Возвращает корзину покупателя.
+    /// </summary>
+    public Cart Cart
+    {
+        get
+        {
+            _cart ??= new Cart();
+            return _cart;
+        }
+    }
+
+
+    /// <summary>
+    /// Возвращает список заказов покупателя.
+    /// </summary>
+    public List<Order> Orders
+    {
+        get
+        {
+            _orders ??= new List<Order>();
+            return _orders;
+        }
+    }
+
+    /// <summary>
     /// Создаёт покупателя с пустым адресом.
     /// </summary>
     public Customer()
     {
         _id = IdGenerator.GetNextId();
         _address = new Address();
+        _cart = new Cart();
+        _orders = new List<Order>();
     }
 
     /// <summary>

@@ -1,7 +1,9 @@
 ﻿
 using ObjectOrientedPractics.Model;
 using Newtonsoft.Json;
-
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ObjectOrientedPractics.Services
 {
@@ -11,7 +13,18 @@ namespace ObjectOrientedPractics.Services
     public static class ProjectSerializer
     {
         /// <summary>
-        /// Хранит данные для сериализации.
+        /// Настройки сериализации.
+        /// </summary>
+        private static readonly JsonSerializerSettings _settings =
+            new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                PreserveReferencesHandling =
+                    PreserveReferencesHandling.Objects
+            };
+
+        /// <summary>
+        /// Хранит данные магазина.
         /// </summary>
         private class ProjectData
         {
@@ -28,7 +41,7 @@ namespace ObjectOrientedPractics.Services
         }
 
         /// <summary>
-        /// Сохраняет данные в JSON-файл.
+        /// Сохраняет данные магазина в файл.
         /// </summary>
         /// <param name="path">Путь к файлу.</param>
         /// <param name="items">Список товаров.</param>
@@ -38,28 +51,23 @@ namespace ObjectOrientedPractics.Services
             List<Item> items,
             List<Customer> customers)
         {
-            // Проверяем списки на null.
-            ArgumentNullException.ThrowIfNull(items);
-            ArgumentNullException.ThrowIfNull(customers);
-
-            // Собираем данные проекта.
+            // Подготавливаем данные.
             ProjectData data = new ProjectData
             {
                 Items = items,
                 Customers = customers
             };
 
-            // Преобразуем данные в JSON.
-            string json = JsonConvert.SerializeObject(
-                data,
-                Formatting.Indented);
+            // Сериализуем с сохранением ссылок.
+            string json =
+                JsonConvert.SerializeObject(data, _settings);
 
-            // Записываем JSON в файл.
+            // Сохраняем JSON в файл.
             File.WriteAllText(path, json);
         }
 
         /// <summary>
-        /// Загружает данные из JSON-файла.
+        /// Загружает данные магазина из файла.
         /// </summary>
         /// <param name="path">Путь к файлу.</param>
         /// <param name="items">Загруженные товары.</param>
@@ -69,24 +77,17 @@ namespace ObjectOrientedPractics.Services
             out List<Item> items,
             out List<Customer> customers)
         {
-            // Проверяем наличие файла.
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException(
-                    "Файл сохранения не найден.",
-                    path);
-            }
-
-            // Читаем файл.
+            // Читаем сохранённые данные.
             string json = File.ReadAllText(path);
 
-            // Восстанавливаем данные из JSON.
+            // Восстанавливаем объекты и ссылки.
             ProjectData data =
-                JsonConvert.DeserializeObject<ProjectData>(json)
+                JsonConvert.DeserializeObject<ProjectData>(
+                    json, _settings)
                 ?? throw new InvalidDataException(
-                    "Файл не содержит корректных данных проекта.");
+                    "Не удалось загрузить данные магазина.");
 
-            // Получаем списки товаров и покупателей.
+            // Возвращаем списки.
             items = data.Items ?? new List<Item>();
             customers = data.Customers ?? new List<Customer>();
         }
