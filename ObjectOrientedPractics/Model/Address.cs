@@ -1,7 +1,5 @@
 ﻿using ObjectOrientedPractics.Services;
 
-
-
 namespace ObjectOrientedPractics.Model
 {
     /// <summary>
@@ -38,15 +36,15 @@ namespace ObjectOrientedPractics.Model
         /// Номер квартиры или помещения.
         /// </summary>
         private string _apartment;
-  
-    /// <summary>
-    /// Почтовый индекс. Шестизначное число.
-    /// </summary>
-    public int Index
+
+        /// <summary>
+        /// Почтовый индекс. Шестизначное число.
+        /// </summary>
+        public int Index
         {
-            get 
+            get
             {
-                return _index; 
+                return _index;
             }
             set
             {
@@ -67,7 +65,7 @@ namespace ObjectOrientedPractics.Model
         {
             get
             {
-                return _country; 
+                return _country;
             }
             set
             {
@@ -83,9 +81,9 @@ namespace ObjectOrientedPractics.Model
         /// </summary>
         public string City
         {
-            get 
+            get
             {
-                return _city; 
+                return _city;
             }
             set
             {
@@ -101,8 +99,8 @@ namespace ObjectOrientedPractics.Model
         /// </summary>
         public string Street
         {
-            get 
-            { 
+            get
+            {
                 return _street;
             }
             set
@@ -119,8 +117,8 @@ namespace ObjectOrientedPractics.Model
         /// </summary>
         public string Building
         {
-            get 
-            { 
+            get
+            {
                 return _building;
             }
             set
@@ -137,8 +135,8 @@ namespace ObjectOrientedPractics.Model
         /// </summary>
         public string Apartment
         {
-            get 
-            { 
+            get
+            {
                 return _apartment;
             }
             set
@@ -149,7 +147,6 @@ namespace ObjectOrientedPractics.Model
                 _apartment = value;
             }
         }
-
 
         /// <summary>
         /// Создаёт пустой адрес.
@@ -188,7 +185,6 @@ namespace ObjectOrientedPractics.Model
             Building = building;
             Apartment = apartment;
         }
-
 
     }
 }
