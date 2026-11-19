@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -76,7 +75,6 @@ namespace ObjectOrientedPractics
             FormClosing += MainForm_FormClosing;
         }
 
-
         /// <summary>
         /// Автоматически сохраняет данные магазина в JSON.
         /// </summary>
@@ -105,7 +103,6 @@ namespace ObjectOrientedPractics
                     "Ошибка сохранения:\n" + ex.Message);
             }
         }
-        
 
         /// <summary>
         /// Загружает данные магазина из JSON.
