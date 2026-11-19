@@ -1,9 +1,8 @@
-﻿
-using ObjectOrientedPractics.Services;
-
-namespace ObjectOrientedPractics.Model;
+﻿using ObjectOrientedPractics.Services;
 
 using Newtonsoft.Json;
+
+namespace ObjectOrientedPractics.Model;
 /// <summary>
 /// Хранит данные о товаре.
 /// </summary>
