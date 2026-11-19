@@ -1,5 +1,4 @@
-﻿
-using ObjectOrientedPractics.Model;
+﻿using ObjectOrientedPractics.Model;
 
 namespace ObjectOrientedPractics.Services;
 
@@ -11,7 +10,7 @@ public static class ItemFactory
     /// <summary>
     /// Массив возможных названий товаров.
     /// </summary>
-    private static readonly string[] Names =
+    private static readonly string[] _names =
     {
         "Ноутбук ASUS VivoBook",
         "Смартфон Xiaomi Redmi Note",
@@ -30,7 +29,7 @@ public static class ItemFactory
     /// <summary>
     /// Массив возможных описаний товаров.
     /// </summary>
-    private static readonly string[] Infos =
+    private static readonly string[] _infos =
     {
         "Гарантия 12 месяцев, доставка в течение 3 дней.",
         "Новинка сезона, в наличии на складе.",
@@ -51,8 +50,8 @@ public static class ItemFactory
     /// <returns>Возвращает объект <see cref="Item"/> со случайными данными.</returns>
     public static Item CreateRandomItem()
     {
-        var name = Names[_random.Next(Names.Length)];
-        var info = Infos[_random.Next(Infos.Length)];
+        var name = _names[_random.Next(_names.Length)];
+        var info = _infos[_random.Next(_infos.Length)];
         var cost = Math.Round(_random.NextDouble() * 100000, 2);
 
         return new Item(name, info, cost, Category.Electronics);
