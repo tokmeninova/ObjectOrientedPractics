@@ -1,6 +1,4 @@
-﻿
-using ObjectOrientedPractics.Model;
-
+﻿using ObjectOrientedPractics.Model;
 
 namespace ObjectOrientedPractics.Services;
 
@@ -12,7 +10,7 @@ public static class CustomerFactory
     /// <summary>
     /// Массив возможных полных имён покупателей.
     /// </summary>
-    private static readonly string[] FullNames =
+    private static readonly string[] _fullNames =
     {
         "Иванов Иван Иванович",
         "Петрова Анна Сергеевна",
@@ -27,7 +25,7 @@ public static class CustomerFactory
     /// <summary>
     /// Массив возможных адресов покупателей.
     /// </summary>
-    private static readonly Address[] Addresses =
+    private static readonly Address[] _addresses =
     {
         new Address(
             634050, "Россия", "Томск",
@@ -68,10 +66,10 @@ public static class CustomerFactory
     public static Customer CreateRandomCustomer()
     {
         string fullname =
-            FullNames[_random.Next(FullNames.Length)];
+            _fullNames[_random.Next(_fullNames.Length)];
 
         Address selectedAddress =
-            Addresses[_random.Next(Addresses.Length)];
+            _addresses[_random.Next(_addresses.Length)];
 
         // Создаём отдельный объект адреса
         // для каждого нового покупателя.
