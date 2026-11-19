@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ObjectOrientedPractics.Model
 {
@@ -18,8 +17,14 @@ namespace ObjectOrientedPractics.Model
         /// </summary>
         public List<Item> Items
         {
-            get { return _items; }
-            set { _items = value; }
+            get
+            {
+                return _items;
+            }
+            set
+            {
+                _items = value;
+            }
         }
 
         /// <summary>
