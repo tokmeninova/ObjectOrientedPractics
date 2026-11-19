@@ -81,7 +81,10 @@ namespace ObjectOrientedPractics.View.Tabs
         /// </summary>
         public List<Item> Items
         {
-            get { return _items; }
+            get
+            {
+                return _items;
+            }
             set
             {
                 // Сохраняем общую ссылку; при null создаём безопасный пустой список.
@@ -98,7 +101,10 @@ namespace ObjectOrientedPractics.View.Tabs
         /// </summary>
         public List<Customer> Customers
         {
-            get { return _customers; }
+            get
+            {
+                return _customers;
+            }
             set
             {
                 // Получаем список покупателей или заменяем null пустой коллекцией.
@@ -445,37 +451,54 @@ namespace ObjectOrientedPractics.View.Tabs
         /// </summary>
         /// <param name="sender">Источник события.</param>
         /// <param name="e">Данные события.</param>
-        private void CartsTab_Load(object? sender, EventArgs e) { }
+        private void CartsTab_Load(object? sender, EventArgs e)
+        {
+        }
+
         /// <summary>
         /// Реагирует на нажатие надписи Items. Дополнительных действий нет.
         /// </summary>
         /// <param name="sender">Источник события.</param>
         /// <param name="e">Данные события.</param>
-        private void itemsLabel_Click(object? sender, EventArgs e) { }
+        private void itemsLabel_Click(object? sender, EventArgs e)
+        {
+        }
+
         /// <summary>
         /// Вызывается при перерисовке панели. Собственная отрисовка не используется.
         /// </summary>
         /// <param name="sender">Источник события.</param>
         /// <param name="e">Данные события.</param>
-        private void panel1_Paint(object? sender, PaintEventArgs e) { }
+        private void panel1_Paint(object? sender, PaintEventArgs e)
+        {
+        }
+
         /// <summary>
         /// Вызывается при выборе элемента корзины. Логика выбора не требуется.
         /// </summary>
         /// <param name="sender">Источник события.</param>
         /// <param name="e">Данные события.</param>
-        private void cartListBox_SelectedIndexChanged(object? sender, EventArgs e) { }
+        private void cartListBox_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+        }
+
         /// <summary>
         /// Вызывается при перерисовке таблицы компоновки. Не изменяет внешний вид.
         /// </summary>
         /// <param name="sender">Источник события.</param>
         /// <param name="e">Данные события.</param>
-        private void tableLayoutPanel1_Paint(object? sender, PaintEventArgs e) { }
+        private void tableLayoutPanel1_Paint(object? sender, PaintEventArgs e)
+        {
+        }
+
         /// <summary>
         /// Вызывается при перерисовке элемента. Дополнительная отрисовка не требуется.
         /// </summary>
         /// <param name="sender">Источник события.</param>
         /// <param name="e">Данные события.</param>
-        private void CategoryCombo_Paint(object? sender, PaintEventArgs e) { }
+        private void CategoryCombo_Paint(object? sender, PaintEventArgs e)
+        {
+        }
 
         /// <summary>
         /// Вызывается при нажатии надписи Cart. Действия не предусмотрены.
