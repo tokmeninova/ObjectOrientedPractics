@@ -1,6 +1,4 @@
-﻿
-
-namespace ObjectOrientedPractics.Model
+﻿namespace ObjectOrientedPractics.Model
 {
     /// <summary>
     /// Хранит коллекции товаров и покупателей магазина.
