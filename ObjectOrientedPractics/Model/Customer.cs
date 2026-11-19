@@ -23,13 +23,10 @@ public class Customer
     /// </summary>
     private Address _address;
 
-
-
     /// <summary>
     /// Корзина покупателя.
     /// </summary>
     private Cart? _cart = new Cart();
-
 
     /// <summary>
     /// Список заказов покупателя.
@@ -39,7 +36,13 @@ public class Customer
     /// <summary>
     /// Возвращает уникальный идентификатор покупателя.
     /// </summary>
-    public int Id { get { return _id; } }
+    public int Id
+    {
+        get
+        {
+            return _id;
+        }
+    }
 
     /// <summary>
     /// Изменяет идентификатор покупателя
@@ -56,7 +59,6 @@ public class Customer
         _id = id;
     }
 
-
     /// <summary>
     /// Возвращает и задаёт полное имя покупателя. Должно быть не длиннее 200 символов.
     /// </summary>
@@ -72,7 +74,6 @@ public class Customer
             _fullname = value;
         }
     }
-
 
     /// <summary>
     /// Возвращает и задаёт адрес доставки покупателя.
@@ -102,7 +103,6 @@ public class Customer
             return _cart;
         }
     }
-
 
     /// <summary>
     /// Возвращает список заказов покупателя.
@@ -160,7 +160,6 @@ public class Customer
 
         IdGenerator.RegisterExistingId(id);
     }
-
 
     public override string ToString()
     {
